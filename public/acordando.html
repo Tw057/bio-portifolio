@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="robots" content="noindex">
+    <title>Carregando…</title>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: #08090C;
+            color: #94A3B8;
+            font: 400 15px/1.6 'Inter', system-ui, -apple-system, sans-serif;
+            text-align: center;
+        }
+        .halo {
+            position: fixed;
+            top: -20%;
+            left: 50%;
+            width: 36rem;
+            height: 36rem;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(45,212,167,.12), transparent 65%);
+            filter: blur(60px);
+            pointer-events: none;
+        }
+        .caixa { position: relative; max-width: 380px; }
+        .pontos { display: flex; gap: 8px; justify-content: center; margin-bottom: 28px; }
+        .ponto {
+            width: 9px; height: 9px;
+            border-radius: 50%;
+            background: #2DD4A7;
+            animation: pulsar 1.3s ease-in-out infinite;
+        }
+        .ponto:nth-child(2) { animation-delay: .18s; }
+        .ponto:nth-child(3) { animation-delay: .36s; }
+        @keyframes pulsar {
+            0%, 100% { opacity: .25; transform: scale(.8); }
+            50%      { opacity: 1;   transform: scale(1); }
+        }
+        h1 { margin: 0 0 12px; font-size: 19px; font-weight: 600; color: #fff; }
+        p  { margin: 0; font-size: 14.5px; }
+        .nota { margin-top: 26px; font-size: 12.5px; color: #475569; }
+        @media (prefers-reduced-motion: reduce) {
+            .ponto { animation: none; opacity: .7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="halo" aria-hidden="true"></div>
+
+    <main class="caixa">
+        <div class="pontos" aria-hidden="true">
+            <span class="ponto"></span><span class="ponto"></span><span class="ponto"></span>
+        </div>
+
+        <h1>Acordando o servidor</h1>
+        <p role="status">
+            Este site roda em hospedagem gratuita e hiberna quando fica sem visitas.
+            Leva alguns segundos — já volto.
+        </p>
+        <p class="nota">Se demorar demais, atualize a página.</p>
+    </main>
+
+    <script>
+        // Tenta a home a cada 3s; assim que responder, entra.
+        const tentar = () => {
+            fetch('/', { method: 'HEAD', cache: 'no-store' })
+                .then((r) => { if (r.ok) location.replace('/'); })
+                .catch(() => {});
+        };
+        setInterval(tentar, 3000);
+        setTimeout(tentar, 1200);
+    </script>
+</body>
+</html>
