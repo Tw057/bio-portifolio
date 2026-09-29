@@ -14,8 +14,12 @@ services:
         value: production
       - key: APP_DEBUG
         value: "false"
+      # Deixe em branco na primeira vez: o start.sh gera uma chave válida
+      # (o Laravel exige o formato base64:..., que generateValue não produz).
+      # Depois do primeiro deploy, copie a chave dos logs e cole aqui — senão
+      # cada reinício invalida as sessões abertas.
       - key: APP_KEY
-        generateValue: true          # o Render gera e guarda
+        sync: false
       - key: APP_URL
         sync: false                  # preencha com a URL do serviço
       - key: LOG_CHANNEL
@@ -24,14 +28,21 @@ services:
         value: warning
       - key: DB_CONNECTION
         value: pgsql
-      - key: DATABASE_URL
+      # DB_URL, não DATABASE_URL: é o nome que o Laravel 13 lê
+      # em config/database.php. Com o nome errado ele cai no padrão
+      # (127.0.0.1) e a conexão é recusada.
+      - key: DB_URL
         fromDatabase:
           name: portfolio-db
           property: connectionString
+      # cookie e não database: a tabela sessions só existe depois da
+      # migration, e a sessão é usada antes disso. Cookie não depende do banco.
       - key: SESSION_DRIVER
-        value: database
+        value: cookie
+      # file em vez de database pelo mesmo motivo da sessão: o cache é
+      # consultado antes de a tabela existir.
       - key: CACHE_STORE
-        value: database
+        value: file
       - key: QUEUE_CONNECTION
         value: database
       - key: ADMIN_EMAIL
