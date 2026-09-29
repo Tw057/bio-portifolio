@@ -16,7 +16,9 @@ RUN npm run build
 # ─────────────────────────────────────────────────────────────
 # Etapa 2: a aplicação
 # ─────────────────────────────────────────────────────────────
-FROM php:8.3-cli-alpine
+# 8.4 e não 8.3: o composer.lock foi gerado num PHP mais novo e travou
+# pacotes do Symfony que exigem >= 8.4.1. A imagem precisa acompanhar o lock.
+FROM php:8.4-cli-alpine
 
 # pdo_pgsql para o Postgres; as demais são exigências do Laravel.
 RUN apk add --no-cache postgresql-dev libzip-dev icu-dev oniguruma-dev \
