@@ -25,3 +25,10 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Banco local — em produção usamos Postgres
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# Assets compilados: gerados no build do Docker
+/public/build
