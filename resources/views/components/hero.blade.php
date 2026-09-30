@@ -39,7 +39,7 @@
         <div class="grid items-center gap-10 sm:gap-14 lg:grid-cols-12 lg:gap-12">
 
             {{-- ══ COLUNA ESQUERDA — a mensagem ═══════════════════════ --}}
-            <div class="lg:col-span-7">
+            <div class="min-w-0 lg:col-span-7">
 
                 {{-- 0. Identidade: avatar redondo com borda em gradiente --}}
                 <div class="animate-fade-up mb-6 flex items-center gap-3.5 sm:mb-8 sm:gap-4">
@@ -172,7 +172,7 @@
             </div>
 
             {{-- ══ COLUNA DIREITA — terminal (glassmorphism) ══════════ --}}
-            <div class="animate-fade-up [animation-delay:400ms] lg:col-span-5">
+            <div class="animate-fade-up [animation-delay:400ms] min-w-0 lg:col-span-5">
                 <div class="relative">
                     {{-- brilho por trás do card --}}
                     <div aria-hidden="true"
@@ -206,7 +206,7 @@
                             <div><span class="text-slate-500">}</span></div>
                         </template>
 
-                        <pre aria-hidden="true" class="overflow-x-auto px-5 py-5 font-mono text-[12.5px] leading-[1.85] sm:text-[13px]"><code data-typewriter class="block min-h-[196px] whitespace-pre"><noscript><div><span class="text-violet-400">class</span> <span class="text-cyan-300">Projeto</span> <span class="text-slate-500">{</span></div><div>    <span class="text-violet-400">public function</span> <span class="text-accent">entregar</span><span class="text-slate-500">(</span><span class="text-cyan-300">Dor</span> <span class="text-orange-300">$dor</span><span class="text-slate-500">): </span><span class="text-cyan-300">Resultado</span></div><div>    <span class="text-slate-500">{</span></div><div>        <span class="text-violet-400">return</span> <span class="text-orange-300">$dor</span></div><div>            <span class="text-slate-500">-></span><span class="text-accent">mapear</span><span class="text-slate-500">()</span></div><div>            <span class="text-slate-500">-></span><span class="text-accent">arquitetar</span><span class="text-slate-500">()</span></div><div>            <span class="text-slate-500">-></span><span class="text-accent">testar</span><span class="text-slate-500">()</span></div><div>            <span class="text-slate-500">-></span><span class="text-accent">colocarNoAr</span><span class="text-slate-500">();</span></div><div>    <span class="text-slate-500">}</span></div><div><span class="text-slate-500">}</span></div></noscript></code><span class="ml-0.5 inline-block w-[7px] animate-blink bg-accent align-middle text-transparent">.</span></pre>
+                        <pre aria-hidden="true" class="w-full overflow-x-auto px-5 py-5 font-mono text-[11.5px] leading-[1.85] sm:text-[13px]"><code data-typewriter class="block min-h-[196px] whitespace-pre"><noscript><div><span class="text-violet-400">class</span> <span class="text-cyan-300">Projeto</span> <span class="text-slate-500">{</span></div><div>    <span class="text-violet-400">public function</span> <span class="text-accent">entregar</span><span class="text-slate-500">(</span><span class="text-cyan-300">Dor</span> <span class="text-orange-300">$dor</span><span class="text-slate-500">): </span><span class="text-cyan-300">Resultado</span></div><div>    <span class="text-slate-500">{</span></div><div>        <span class="text-violet-400">return</span> <span class="text-orange-300">$dor</span></div><div>            <span class="text-slate-500">-></span><span class="text-accent">mapear</span><span class="text-slate-500">()</span></div><div>            <span class="text-slate-500">-></span><span class="text-accent">arquitetar</span><span class="text-slate-500">()</span></div><div>            <span class="text-slate-500">-></span><span class="text-accent">testar</span><span class="text-slate-500">()</span></div><div>            <span class="text-slate-500">-></span><span class="text-accent">colocarNoAr</span><span class="text-slate-500">();</span></div><div>    <span class="text-slate-500">}</span></div><div><span class="text-slate-500">}</span></div></noscript></code><span class="ml-0.5 inline-block w-[7px] animate-blink bg-accent align-middle text-transparent">.</span></pre>
 
                         {{-- rodapé: stack --}}
                         <div class="flex flex-wrap items-center gap-2 border-t border-line/80 px-5 py-3.5">
