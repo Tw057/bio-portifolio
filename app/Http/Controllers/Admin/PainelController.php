@@ -22,6 +22,12 @@ class PainelController extends Controller
         return view('admin.painel', [
             'navegadorIgnorado' => $request->cookie(Rastreador::COOKIE_DONO) === $rastreador->assinaturaDono(),
 
+            // Diagnóstico: com o site recém-publicado é difícil saber se a
+            // ausência de números significa "ninguém veio" ou "o registro
+            // está quebrado". Estes dois contam TUDO, sem nenhum filtro.
+            'totalBruto'   => Evento::count(),
+            'ultimoEvento' => Evento::latest('id')->first(),
+
             'totalProjetos' => Projeto::count(),
             'projetosNoAr'  => Projeto::where('publicado', true)->count(),
 

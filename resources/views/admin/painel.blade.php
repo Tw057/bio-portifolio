@@ -55,7 +55,36 @@
         @endforeach
     </div>
 
+    {{-- Diagnóstico: distingue "ninguém veio" de "o registro quebrou" --}}
+    <section class="mt-6 rounded-xl border border-line bg-panel/30 px-5 py-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <p class="font-mono text-[11px] uppercase tracking-[0.15em] text-slate-600">
+                Diagnóstico
+            </p>
+            <p class="font-mono text-[12px] text-slate-500">
+                {{ $totalBruto }} {{ $totalBruto === 1 ? 'registro' : 'registros' }} no banco (sem filtro)
+            </p>
+        </div>
+
+        @if ($ultimoEvento)
+            <p class="mt-2.5 text-[13px] text-slate-400">
+                Último: <span class="text-slate-200">{{ $ultimoEvento->tipo }}</span>
+                @if ($ultimoEvento->destino)
+                    → <span class="text-accent">{{ $ultimoEvento->destino }}</span>
+                @endif
+                · {{ $ultimoEvento->dispositivo }}
+                · {{ $ultimoEvento->created_at?->diffForHumans() }}
+            </p>
+        @else
+            <p class="mt-2.5 text-[13px] text-slate-500">
+                Nenhum registro ainda. Para testar, abra o site numa aba anônima —
+                ela não carrega o cookie que exclui você da contagem.
+            </p>
+        @endif
+    </section>
+
     {{-- ── Visitas por dia ──────────────────────────────────── --}}
+
     <section class="mt-6 rounded-xl border border-line bg-panel/50 p-6">
         <h2 class="text-[15px] font-semibold text-white">Visitas nos últimos 14 dias</h2>
 
