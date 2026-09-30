@@ -14,16 +14,19 @@ services:
         value: production
       - key: APP_DEBUG
         value: "false"
-      # Deixe em branco na primeira vez: o start.sh gera uma chave válida
-      # (o Laravel exige o formato base64:..., que generateValue não produz).
-      # Depois do primeiro deploy, copie a chave dos logs e cole aqui — senão
-      # cada reinício invalida as sessões abertas.
+      # Formato obrigatório: base64: + 32 bytes. O start.sh valida e gera
+      # uma se vier vazia ou malformada, mas fixe a sua aqui — uma chave
+      # diferente a cada reinício derruba todas as sessões.
       - key: APP_KEY
         sync: false
       - key: APP_URL
         sync: false                  # preencha com a URL do serviço
+      # errorlog e não stderr: com o servidor embutido do PHP, escrever
+      # no stderr pode vazar para o corpo da resposta antes dos headers,
+      # causando "Cannot modify header information". O errorlog vai para
+      # o log do processo, que o Render também mostra.
       - key: LOG_CHANNEL
-        value: stderr                # logs aparecem no painel do Render
+        value: errorlog
       - key: LOG_LEVEL
         value: warning
       - key: DB_CONNECTION

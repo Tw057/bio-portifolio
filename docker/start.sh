@@ -3,23 +3,33 @@ set -e
 
 echo "==> Preparando a aplicação"
 
-# APP_KEY: sem ela o Laravel não sobe. Em produção vem da variável
-# de ambiente; aqui é só uma rede de segurança para o primeiro deploy.
-if [ -z "$APP_KEY" ]; then
-    echo ""
-    echo "########################################################"
-    echo "#  APP_KEY não definida — gerando uma agora."
-    echo "#"
-    echo "#  IMPORTANTE: copie a chave abaixo e cole em"
-    echo "#  Environment > APP_KEY no painel do Render."
-    echo "#  Sem isso, cada reinício gera outra chave e derruba"
-    echo "#  as sessões — você é deslogado do painel toda hora."
-    echo "########################################################"
-    php artisan key:generate --force --show
-    php artisan key:generate --force
-    echo "########################################################"
-    echo ""
-fi
+# A APP_KEY precisa ser "base64:" seguido de 32 bytes codificados. Um valor
+# vazio, truncado ou em outro formato derruba a aplicação inteira com
+# "Unsupported cipher or incorrect key length" — e o erro só aparece quando
+# a primeira página é servida, não durante o build.
+case "$APP_KEY" in
+    base64:*)
+        echo "==> APP_KEY definida"
+        ;;
+    *)
+        CHAVE="base64:$(php -r 'echo base64_encode(random_bytes(32));')"
+        export APP_KEY="$CHAVE"
+
+        echo ""
+        echo "########################################################"
+        echo "#  APP_KEY ausente ou invalida. Gerando uma agora."
+        echo "#"
+        echo "#  COPIE a linha abaixo e cole em:"
+        echo "#  Render > Environment > APP_KEY"
+        echo "#"
+        echo "#  $CHAVE"
+        echo "#"
+        echo "#  Sem fixar a chave, cada reinicio gera outra e todas"
+        echo "#  as sessoes caem."
+        echo "########################################################"
+        echo ""
+        ;;
+esac
 
 # O Postgres do Render pode levar alguns segundos para aceitar conexões
 # depois que o container sobe. Sem esperar, a migration falha e o deploy
@@ -28,8 +38,8 @@ echo "==> Aguardando o banco responder"
 tentativa=1
 until php artisan db:show --quiet >/dev/null 2>&1; do
     if [ "$tentativa" -ge 20 ]; then
-        echo "!! Banco não respondeu após 20 tentativas."
-        echo "!! Verifique se DB_URL está definida nas variáveis de ambiente."
+        echo "!! Banco nao respondeu apos 20 tentativas."
+        echo "!! Verifique se DB_URL esta definida nas variaveis de ambiente."
         php artisan db:show || true
         exit 1
     fi
@@ -49,7 +59,7 @@ php artisan db:seed --class=PortfolioSeeder --force || true
 
 # Cria o admin se as variáveis estiverem definidas e ele ainda não existir.
 if [ -n "$ADMIN_EMAIL" ] && [ -n "$ADMIN_PASSWORD" ]; then
-    echo "==> Garantindo usuário administrador"
+    echo "==> Garantindo usuario administrador"
     php artisan admin:criar --email="$ADMIN_EMAIL" --nome="${ADMIN_NOME:-Admin}" --senha="$ADMIN_PASSWORD" || true
 fi
 
