@@ -6,7 +6,10 @@ services:
     runtime: docker
     plan: free
     region: oregon
-    healthCheckPath: /
+    # /up e não /: o Render verifica a saúde a cada poucos minutos, e
+    # bater na home faria cada verificação virar uma visita nas métricas.
+    # /up é a rota de health do próprio Laravel — responde sem rastrear.
+    healthCheckPath: /up
     envVars:
       - key: APP_NAME
         value: "Portfolio Thiago"

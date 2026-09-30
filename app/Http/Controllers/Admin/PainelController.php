@@ -8,13 +8,14 @@ use App\Models\Projeto;
 use App\Services\Rastreador;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class PainelController extends Controller
 {
-    public function __invoke(Request $request, Rastreador $rastreador): View
+    public function index(Request $request, Rastreador $rastreador): View
     {
         $desde = Carbon::now()->subDays(30)->startOfDay();
 
@@ -71,6 +72,22 @@ class PainelController extends Controller
                 ->orderBy('dia')
                 ->get(),
         ]);
+    }
+
+    /**
+     * Apaga os eventos registrados.
+     *
+     * Os primeiros dias acumulam ruído — testes do próprio dono, health
+     * checks, robôs. Zerar antes de divulgar faz a contagem significar
+     * algo desde o primeiro visitante real.
+     */
+    public function zerar(): RedirectResponse
+    {
+        $total = Evento::count();
+
+        Evento::query()->delete();
+
+        return back()->with('sucesso', "{$total} registros apagados. A contagem recomeça agora.");
     }
 
     /**

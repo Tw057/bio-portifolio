@@ -10,17 +10,32 @@
             <p class="mt-1.5 text-[14px] text-slate-500">Últimos 30 dias · robôs não entram na conta</p>
         </div>
 
-        @if ($navegadorIgnorado)
-            <span class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/10
-                         px-3 py-1.5 text-[12.5px] text-accent"
-                  title="As suas visitas e cliques neste navegador não entram nos números.">
-                <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
-                    <path fill-rule="evenodd" d="M.664 10.59a1.65 1.65 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd"/>
-                </svg>
-                Você não está sendo contado
-            </span>
-        @endif
+        <div class="flex flex-wrap items-center gap-2.5">
+            @if ($navegadorIgnorado)
+                <span class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/10
+                             px-3 py-1.5 text-[12.5px] text-accent"
+                      title="As suas visitas e cliques neste navegador não entram nos números.">
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+                        <path fill-rule="evenodd" d="M.664 10.59a1.65 1.65 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd"/>
+                    </svg>
+                    Você não está sendo contado
+                </span>
+            @endif
+
+            <form method="POST" action="{{ route('admin.metricas.zerar') }}"
+                  onsubmit="return confirm('Apagar todas as visitas e cliques registrados? Não dá para desfazer.')">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                        class="rounded-lg border border-line px-3 py-1.5 text-[12.5px] text-slate-500
+                               transition-colors hover:border-red-500/40 hover:text-red-400
+                               focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                               focus-visible:outline-slate-500">
+                    Zerar métricas
+                </button>
+            </form>
+        </div>
     </header>
 
     {{-- ── Números principais ───────────────────────────────── --}}

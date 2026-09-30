@@ -46,7 +46,8 @@ Route::post('/sair', [LoginController::class, 'sair'])
 */
 
 Route::middleware('auth')->prefix('painel')->name('admin.')->group(function () {
-    Route::get('/', PainelController::class)->name('painel');
+    Route::get('/', [PainelController::class, 'index'])->name('painel');
+    Route::delete('/metricas', [PainelController::class, 'zerar'])->name('metricas.zerar');
 
     Route::get('/projetos',                 [ProjetoController::class, 'index'])->name('projetos.index');
     Route::get('/projetos/novo',            [ProjetoController::class, 'create'])->name('projetos.create');
