@@ -32,3 +32,6 @@ Thumbs.db
 
 # Assets compilados: gerados no build do Docker
 /public/build
+
+# Arquivos de ferramentas locais
+.mimocode/
