@@ -43,4 +43,23 @@ class Configuracao extends Model
 
         Cache::forget(self::CACHE_KEY);
     }
+
+    /**
+     * Grava apenas o que ainda não existe.
+     *
+     * Usado pelo seeder, que roda a cada deploy: sem isso, qualquer edição
+     * feita pelo painel seria revertida na próxima subida do servidor.
+     */
+    public static function semearFaltantes(array $valores): void
+    {
+        $existentes = static::pluck('chave')->all();
+
+        foreach ($valores as $chave => $valor) {
+            if (! in_array($chave, $existentes, true)) {
+                static::create(['chave' => $chave, 'valor' => $valor]);
+            }
+        }
+
+        Cache::forget(self::CACHE_KEY);
+    }
 }

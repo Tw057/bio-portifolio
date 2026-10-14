@@ -14,10 +14,12 @@ class PortfolioSeeder extends Seeder
 {
     public function run(): void
     {
-        Configuracao::gravar([
+        // semearFaltantes e não gravar: o seeder roda a cada deploy, e
+        // sobrescrever apagaria o que você editou pelo painel.
+        Configuracao::semearFaltantes([
             'nome'              => 'Thiago',
             'cargo'             => 'Desenvolvedor de Software · PHP / Laravel',
-            'whatsapp'          => '5598870241632',
+            'whatsapp'          => '559870241632',
             'whatsapp_mensagem' => 'Olá! Vim pelo seu site e gostaria de conversar sobre um projeto.',
             'email'             => 'waquimthiago7@gmail.com',
             'github'            => 'https://github.com/Tw057',
@@ -26,6 +28,13 @@ class PortfolioSeeder extends Seeder
             'twitter'           => '',
             'local'             => 'Brasil · Atendimento remoto',
         ]);
+
+        // Correção pontual: o número gravado no primeiro deploy estava
+        // errado e fazia o WhatsApp recusar a conversa para quem ainda não
+        // tinha o contato salvo. Remover depois de confirmado em produção.
+        if (Configuracao::obter('whatsapp') === '5598870241632') {
+            Configuracao::gravar(['whatsapp' => '559870241632']);
+        }
 
         Projeto::updateOrCreate(
             ['titulo' => 'Sistema de Gestão para Clínica Veterinária'],
